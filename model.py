@@ -26,7 +26,7 @@ def today():
 def callbacks(net_name):
     # checkpoint
     filepath="./model/"+net_name+"-"+ today() +"-weights-{epoch:02d}-{loss:.2f}-{accuracy:.2f}-{val_loss:.2f}-{val_accuracy:.2f}.hdf5"
-    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+    checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=True, mode='max')
     log_history = TrainingHistory(net_name)
     callbacks = [checkpoint, log_history]
     return callbacks

@@ -35,7 +35,7 @@ if __name__ == "__main__":
     model = SentimentAnalysis((maxLen,), CLASSES_NUMBER, embedding_layer)
 
     # Train model
-    model.fit(X_train, Y_train, epochs=2000, batch_size=32, workers=4,
+    model.fit(X_train, Y_train, epochs=2000, batch_size=64, workers=4,
     	shuffle=True, validation_data=(X_test, Y_test), callbacks=callbacks(NET_NAME))
 
     # Visualize History of Traing model
