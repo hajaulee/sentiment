@@ -57,12 +57,15 @@ if __name__ == "__main__":
 
     
     # Train model
-    model.fit(X_train, Y_train, epochs=2000, batch_size=64, workers=4,
-        shuffle=True, validation_data=(X_test, Y_test), callbacks=callbacks(NET_NAME))
+    if len(sys.argv) > 2 and sys.argv[1] == '-t':
+        epochs = int(sys.argv[2])
+        net_name = NET_NAME + sys[2]
+        model.fit(X_train, Y_train, epochs=epochs, batch_size=64, workers=4,
+            shuffle=True, validation_data=(X_test, Y_test), callbacks=callbacks(net_name))
 
-    # Visualize History of Traing model
-    show_training_history("./model/"+NET_NAME+"-history.txt")
-    # Evaluate model, loss and accuracy
-    loss, acc = model.evaluate(X_test, Y_test, verbose=1)
-    print()
-    print("Test accuracy = ", acc)
+        # Visualize History of Traing model
+        show_training_history("./model/"+NET_NAME+"-history.txt")
+        # Evaluate model, loss and accuracy
+        loss, acc = model.evaluate(X_test, Y_test, verbose=1)
+        print()
+        print("Test accuracy = ", acc)
