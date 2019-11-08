@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # Train model
     if len(sys.argv) > 2 and sys.argv[1] == '-t':
         epochs = int(sys.argv[2])
-        net_name = NET_NAME + sys[2]
+        net_name = NET_NAME + sys.argv[2]
         model.fit(X_train, Y_train, epochs=epochs, batch_size=64, workers=4,
             shuffle=True, validation_data=(X_test, Y_test), callbacks=callbacks(net_name))
 
