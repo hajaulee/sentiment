@@ -59,10 +59,10 @@ def SentimentAnalysis(input_shape, classes_nb, embedding_layer):
     X = LSTM(128)(X)
     # Add dropout with a probability of 0.5
     X = Dropout(0.5)(X)
-    X = Dense(256)(X)
-    X = LeakyReLU(alpha=0.15)(X)
-    X = Dropout(0.5)(X)
-    X = Dense(128)(X)
+    # X = Dense(256)(X)
+    # X = LeakyReLU(alpha=0.15)(X)
+    # X = Dropout(0.5)(X)
+    # X = Dense(128)(X)
     X = LeakyReLU(alpha=0.15)(X)
     
     X = Dense(classes_nb)(X)
