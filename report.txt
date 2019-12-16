@@ -1,0 +1,74 @@
+# Dự liệu:
+* Bộ dự liệu review về sách, chia làm 2 nhãn (Negative: Tiêu cực, Positive: tích cực)
+* Cấu trúc dự liệu 
+____________________________________________
+	Câu			 				|	Nhãn
+================================|===========
+bla bla book not good 			| __label__ 1  => Negative
+________________________________|___________
+bla bla good book 				| __label__ 2  => Positive
+
+* Phân bố dự liệu:
+  + Tổng 10000 câu
+  + Negative: 5097 câu
+  + Positive: 4903 câu
+  + Xem biểu đồ phân bố ne/po, train/test
+
+
+# Mô hình(LSTM):
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 215)               0         
+_________________________________________________________________
+embedding_1 (Embedding)      (None, 215, 50)           20000050  
+_________________________________________________________________
+lstm_1 (LSTM)                (None, 215, 128)          91648     
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 215, 128)          0         
+_________________________________________________________________
+lstm_2 (LSTM)                (None, 128)               131584    
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 128)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 2)                 258       
+_________________________________________________________________
+activation_1 (Activation)    (None, 2)                 0         
+=================================================================
+Total params: 20,223,540
+Trainable params: 223,490
+Non-trainable params: 20,000,050
+
+* Thống số như trên:
+	+ Cụ thể: 	- Lớp Input: Nhận đầu vào
+				- Lớp Embedding: Lớp này đã được pre-trained nên không train nữa.
+				- 2 Lớp LSTM với Dropout đi kèm phía sau
+				- 1 Lớp Fuly-connected (2 unit => 2 lớp) với activation: Softmax để trả về đầu ra với bài toán phân loại.
+	+ Tham số: 	- Tổng : 20,223,540
+				- Không train: 20,000,050 (Tham số của lớp pre-trained Embedding)
+				- Tham số thực sự được train: 223,490
+# Kết quả: 
+
+	+ Bi-direct: epochs 50 (> 50 overfitting ), Adam mặc định.
+		- Accuracy: train: ~ 87%, test: ~83%
+		- Loss: train: train: 0.3, test: 0.4 
+
+	+ LSTM: epochs: 150 (> 150 bắt đầu `overfitting`, train vẫn tốt lên, nhưng test thì không) với learning rate : 0.0002 (với lr mặc định 0.001 của Adam không thể hội tụ được.)
+		- Accuracy: train: ~ 85%, test: ~81%
+		- Loss: train: train: 0.36, test: 0.4
+	
+	+ RNN truyền thống: epochs 150, learning rate : 0.0001
+		- Accuracy: train: ~74%, test: ~65%
+		- Loss: train: ~0.55, test: 0.65
+
+	+ GRU: Chưa thể hội tụ được nên bỏ qua.
+
+	+ SVM(kernel: rbf<rbf là gì chưa rõ>, <Dùng kernel linear thì kết quả tệ hơn>): 
+		- Accuracy: 72,2 %
+		- Chi tiết: 
+			'accuracy': 0.722,
+			'f1-score': 0.7219930498262457,
+			'precision': 0.7226618204671205,
+			'recall': 0.7228045193870408,
+			'support': 2000
